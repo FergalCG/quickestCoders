@@ -5,9 +5,7 @@ import TextArea from './TextArea'
 class App extends Component {
     constructor() {
         super()
-        this.state = {
-            lesson: ["H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "."]
-        }
+        this.state = {}
     }
 
     render() {
