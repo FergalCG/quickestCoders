@@ -4,7 +4,7 @@
   "description": "Becoming the Quickest Coders",
   "main": "index.js",
   "scripts": {
-    "watch": "webpack-dev-server --open --progress"
+    "watch": "webpack-dev-server --open --progress --watch"
   },
   "repository": {
     "type": "git",

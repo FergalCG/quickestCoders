@@ -1,0 +1,64 @@
+#root {
+    height: max-content;
+    width: max-content;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+.app-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+
+.text-container {
+    text-align: center;
+}
+
+.text-item {
+    position: relative;
+}
+
+.text-item-blink {
+    position: relative;
+    animation: blink 0.65s linear infinite;
+    -webkit-animation: blink 0.65s infinite;
+}
+
+@keyframes blink {
+    0%{
+        background: black;
+        color: white;
+    }
+    49.99% {
+        background: black;
+        color: white;
+    }
+    50%{
+        background: white;
+        color: black;
+    }
+    99.99% {
+        background: white;
+        color: black;
+    }
+}
+
+@-webkit-keyframes blink {
+    0%{
+        background: black;
+        color: white;
+    }
+    49.99% {
+        background: black;
+        color: white;
+    }
+    50%{
+        background: white;
+        color: black;
+    }
+    99.99% {
+        background: white;
+        color: black;
+    }
+}

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import TextArea from './TextArea'
 
 
 class App extends Component {
@@ -11,8 +12,8 @@ class App extends Component {
 
     render() {
         return(
-            <div id='text-input'>
-                {this.state.lesson.map( (char, idx) => <span className='text-item' key={idx}>{char}</span>)}
+            <div className='app-container'>
+                <TextArea />
             </div>
         )
     }

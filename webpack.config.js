@@ -6,6 +6,7 @@ module.exports = {
     contentBase: path.resolve(__dirname, "./public"),
     historyApiFallback: true
   },
+  devtool: 'inline-source-map',
   entry: path.resolve(__dirname, './client/index.js'),
   output: {
     path: path.resolve(__dirname, './public'),
@@ -15,7 +16,7 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        // exclude: /node_modules/,
+        exclude: /node_modules/,
         enforce: 'pre',
         use: ['babel-loader', 'source-map-loader']
       }
