@@ -1,25 +1,36 @@
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+}
+
 #root {
-    height: max-content;
-    width: max-content;
+    height: 100vh;
     font-family: sans-serif;
     box-sizing: border-box;
 }
 
 .app-container {
+    height: 100vh;
     display: flex;
     position: relative;
     justify-content: center;
 }
 
 .text-container {
+    height: 50vh;
+    width: 100vw;
+    align-items: center;
     text-align: center;
 }
 
-.text-item {
+.normal {
     position: relative;
 }
 
-.text-item-blink {
+.blinking {
     position: relative;
     animation: blink 0.65s linear infinite;
     -webkit-animation: blink 0.65s infinite;

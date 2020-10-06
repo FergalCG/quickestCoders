@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Char from './Char'
 
 
 class TextArea extends Component {
@@ -6,20 +7,34 @@ class TextArea extends Component {
         super()
         this.state = {
             lesson: ["H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "."],
-            status = ['blinker'],
             cursorIdx: 0
         }
+
+        this.handleClick = this.handleClick.bind(this)
+        this.handleKeyPress = this.handleKeyPress.bind(this)
     }
 
-    keyPress(event) {
+    handleKeyPress(event) {
         console.log(event)
+        this.setState({cursorIdx: this.state.cursorIdx++})
+    }
+
+    handleClick(event) {
+        console.log('CLICKED!!')
+        this.setState({cursorIdx: 0})
+    }
+
+    statusUpdate(cursorIdx, idx) {
+        if(idx === cursorIdx) return 'blinking'
+        else if(idx < cursorIdx) return 'complete'
+        else return 'normal'
     }
 
     render() {
-        let { lesson, cursorIdx, status } = this.state
+        let { lesson, cursorIdx } = this.state
         return(
-            <div className={cursorIdx === idx ? 'text-container-blink' : 'text-container'} onClick={() => this.setState({cursorIdx: 0})} onKeyDownCapture={() => this.keyPress}>
-                {lesson.map( (char, idx) => <span className={cursorIdx === idx ? 'text-item-blink': 'text-item'} key={idx}>{char}</span>)}
+            <div className='text-container' onClick={this.handleClick} onKeyPress={this.handleKeyPress} tabIndex='0'>
+                {lesson.map( (char, idx) => <Char char={char} status={this.statusUpdate(cursorIdx, idx)} key={idx} />)}
             </div>
         )
     }
