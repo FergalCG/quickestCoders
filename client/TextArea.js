@@ -15,8 +15,8 @@ class TextArea extends Component {
     }
 
     handleKeyPress(event) {
-        console.log(event)
-        this.setState({cursorIdx: this.state.cursorIdx++})
+        if(event.charCode === this.state.lesson[this.state.cursorIdx].charCodeAt(0)) this.setState({cursorIdx: ++this.state.cursorIdx})
+        console.log(this.state.cursorIdx)
     }
 
     handleClick(event) {
@@ -33,8 +33,8 @@ class TextArea extends Component {
     render() {
         let { lesson, cursorIdx } = this.state
         return(
-            <div className='text-container' onClick={this.handleClick} onKeyPress={this.handleKeyPress} tabIndex='0'>
-                {lesson.map( (char, idx) => <Char char={char} status={this.statusUpdate(cursorIdx, idx)} key={idx} />)}
+            <div className='text-container' onClick={this.handleClick} onKeyPress={this.handleKeyPress} tabIndex='-1'>
+                {lesson.map( (char, idx) => <Char char={char} cursor={cursorIdx} status={this.statusUpdate(cursorIdx, idx)} key={idx} />)}
             </div>
         )
     }

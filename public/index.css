@@ -36,6 +36,10 @@ body {
     -webkit-animation: blink 0.65s infinite;
 }
 
+.complete {
+    position: relative;
+}
+
 @keyframes blink {
     0%{
         background: black;
