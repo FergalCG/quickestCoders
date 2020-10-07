@@ -7,7 +7,8 @@ class TextArea extends Component {
         super()
         this.state = {
             lesson: ["H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "."],
-            cursorIdx: 0
+            cursorIdx: 0,
+            complete: false
         }
 
         this.handleClick = this.handleClick.bind(this)
@@ -15,12 +16,17 @@ class TextArea extends Component {
     }
 
     handleKeyPress(event) {
-        if(event.charCode === this.state.lesson[this.state.cursorIdx].charCodeAt(0)) this.setState({cursorIdx: ++this.state.cursorIdx})
-        console.log(this.state.cursorIdx)
+        const lesson = this.state.lesson
+        let cursorIdx = this.state.cursorIdx
+        if(event.charCode === lesson[cursorIdx].charCodeAt(0)) {
+            if(cursorIdx === lesson.length.Char) this.setState({complete: true})
+            else this.setState({cursorIdx: ++cursorIdx})
+        } 
+        
+        console.log(cursorIdx)
     }
 
     handleClick(event) {
-        console.log('CLICKED!!')
         this.setState({cursorIdx: 0})
     }
 

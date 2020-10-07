@@ -8,10 +8,15 @@ class Char extends Component {
             char: props.char,
             status: props.status || 'normal'
         }
+        this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this)
     }
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.status !== this.state.status
+        if(nextProps.status !== this.state.status) {
+            this.setState({status: nextProps.status})
+            return true
+        }
+        return false
     }
 
     render() {
