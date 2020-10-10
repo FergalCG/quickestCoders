@@ -16,6 +16,7 @@ class TextArea extends Component {
     }
 
     handleKeyPress(event) {
+        event.preventDefault()
         const lesson = this.state.lesson
         let cursorIdx = this.state.cursorIdx
         if(event.charCode === lesson[cursorIdx].charCodeAt(0)) {
