@@ -10,13 +10,18 @@
     "type": "git",
     "url": "git+https://github.com/FergalCG/quickestCoders.git"
   },
-  "author": "",
+  "author": "Fergal C.G.",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/FergalCG/quickestCoders/issues"
   },
   "homepage": "https://github.com/FergalCG/quickestCoders#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.9",
+    "nodemon": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
