@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Char from './Char'
+import axios from 'axios'
 
 
 class TextArea extends Component {
@@ -19,6 +20,7 @@ class TextArea extends Component {
         event.preventDefault()
         const lesson = this.state.lesson
         let cursorIdx = this.state.cursorIdx
+        axios.get('/code/')
         if(event.charCode === lesson[cursorIdx].charCodeAt(0)) {
             if(cursorIdx === lesson.length.Char) this.setState({complete: true})
             else this.setState({cursorIdx: ++cursorIdx})
