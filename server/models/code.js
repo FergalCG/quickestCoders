@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const codeSchema = new Schema({
-    codeSnippet: {
+    code: {
         type: string,
         required: true
     }
