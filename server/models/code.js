@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const codeSchema = new Schema({
     code: {
-        type: string,
+        type: String,
         required: true
     }
 }, 

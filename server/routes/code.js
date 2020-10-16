@@ -6,3 +6,5 @@ router.route('/').get(async (req, res, next) => {
     console.log(data)
     res.send(data)
 })
+
+module.exports = router
