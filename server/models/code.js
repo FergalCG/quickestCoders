@@ -9,7 +9,10 @@ const codeSchema = new Schema({
     }
 }, 
 {
-    timestamps: true
+    timestamps: false
+},
+{
+    collection: 'code'
 })
 
 const Code = mongoose.model('Code', codeSchema)

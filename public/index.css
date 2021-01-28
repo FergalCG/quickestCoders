@@ -25,6 +25,7 @@ body {
     width: 100vw;
     align-items: center;
     text-align: center;
+    overflow: auto;
 }
 
 .normal {

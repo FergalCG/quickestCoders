@@ -6,8 +6,9 @@ module.exports = {
     contentBase: path.resolve(__dirname, "./public"),
     historyApiFallback: true,
     proxy: {
-      '/api': 'https://localhost:3000',
-      pathRewrite: { '^/api': ''}
+      '/api': 'http://localhost:5000',
+      pathRewrite: { '^/api': ''},
+      secure: false
     }    
   },
   devtool: 'inline-source-map',

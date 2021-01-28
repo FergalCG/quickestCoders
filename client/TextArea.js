@@ -9,24 +9,34 @@ class TextArea extends Component {
         this.state = {
             lesson: ["H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "."],
             cursorIdx: 0,
-            complete: false
+            numWrong: 0,
+            wrongCharsStartIdx: 0,
+            complete: false,
+            allowedKeys: new Set(["a", "A", "b", "B", "c", "C", "d", "D", "e", "E", "f", "F", "g", "G", "h", "H", "i", "I", "j", "J", 
+                                "k", "K", "l", "L", "m", "M", "n", "N", "o", "O", "p", "P", "q", "Q", "r", "R", "s", "S", "t", "T", "u", 
+                                "U", "v", "V", "w", "W", "x", "X", "y", "Y", "z", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 
+                                "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "[", "{", "]", "}", ";", ":", "'", 
+                                "\"", ",", "<", ".", ">", "/", "?", "|", "\\", "`", "~", "Enter", "Tab", " ", "Backspace"])
         }
 
         this.handleClick = this.handleClick.bind(this)
-        this.handleKeyPress = this.handleKeyPress.bind(this)
+        this.handleKeyDown = this.handleKeyDown.bind(this)
     }
 
-    handleKeyPress(event) {
+    handleKeyDown(event) {
         event.preventDefault()
         const lesson = this.state.lesson
         let cursorIdx = this.state.cursorIdx
-        axios.get('/code/')
-        if(event.charCode === lesson[cursorIdx].charCodeAt(0)) {
-            if(cursorIdx === lesson.length.Char) this.setState({complete: true})
-            else this.setState({cursorIdx: ++cursorIdx})
-        } 
-        
-        console.log(cursorIdx)
+        if(this.state.allowedKeys.has(event.key)) {
+            if(event.key === lesson[cursorIdx] || (event.key === "Enter" && lesson[cursorIdx] === <br/>) || (event.key === "Tab" && lesson[cursorIdx] === "  ")) {
+                if(cursorIdx === lesson.length-1) this.setState({cursorIdx: ++cursorIdx, complete: true})
+                else this.setState({cursorIdx: ++cursorIdx})
+            } else if(event.key === "Backspace") {
+                
+            }else {
+    
+            }
+        }
     }
 
     handleClick(event) {
@@ -42,7 +52,7 @@ class TextArea extends Component {
     render() {
         let { lesson, cursorIdx } = this.state
         return(
-            <div className='text-container' onClick={this.handleClick} onKeyPress={this.handleKeyPress} tabIndex='-1'>
+            <div className='text-container' onClick={this.handleClick} onKeyDown={this.handleKeyDown} tabIndex='-1'>
                 {lesson.map( (char, idx) => <Char char={char} cursor={cursorIdx} status={this.statusUpdate(cursorIdx, idx)} key={idx} />)}
             </div>
         )
