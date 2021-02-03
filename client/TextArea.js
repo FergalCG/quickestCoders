@@ -35,9 +35,13 @@ class TextArea extends Component {
             } else if(event.key === "Backspace") {
                 
             }else {
-    
+                
             }
         }
+    }
+
+    handleError() {
+        
     }
 
     handleClick(event) {
