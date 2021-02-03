@@ -7,7 +7,7 @@ class TextArea extends Component {
     constructor() {
         super()
         this.state = {
-            lesson: ["H", "e", "l", "l", "o", ",", <br/>, "\u0009\u0009", "W", "o", "r", "l", "d", "."],
+            lesson: ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"],
             cursorIdx: 0,
             numWrong: 0,
             wrongCharsStartIdx: 0,
@@ -29,7 +29,7 @@ class TextArea extends Component {
         let cursorIdx = this.state.cursorIdx
         console.log(lesson[cursorIdx])
         if(this.state.allowedKeys.has(event.key)) {
-            if(event.key === lesson[cursorIdx] || (event.key === "Enter" && lesson[cursorIdx].type === "br") || (event.key === "Tab" && lesson[cursorIdx] === "\u0009\u0009")) {
+            if(event.key === lesson[cursorIdx]) {
                 if(cursorIdx === lesson.length-1) this.setState({cursorIdx: ++cursorIdx, complete: true})
                 else this.setState({cursorIdx: ++cursorIdx})
             } else if(event.key === "Backspace") {

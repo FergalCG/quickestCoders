@@ -21,15 +21,15 @@ body {
 }
 
 .text-container {
-    height: 50vh;
-    width: 100vw;
-    align-items: center;
-    text-align: center;
     overflow: auto;
 }
 
 .normal {
     position: relative;
+}
+
+.normal-tab {
+    margin-left: 1.5em;
 }
 
 .blinking {
