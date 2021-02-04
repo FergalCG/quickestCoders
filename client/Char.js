@@ -12,8 +12,11 @@ class Char extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if(nextProps.status !== this.state.status) {
-            this.setState({status: nextProps.status})
+        if(nextProps.status !== this.state.status || nextProps.char !== this.state.char) {
+            this.setState({
+                status: nextProps.status,
+                char: nextProps.char
+            })
             return true
         }
         return false

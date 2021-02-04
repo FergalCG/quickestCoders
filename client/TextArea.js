@@ -8,6 +8,7 @@ class TextArea extends Component {
         super()
         this.state = {
             lesson: ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"],
+            lessonOriginal: ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"],
             cursorIdx: 0,
             wrongCharsStartIdx: 0,
             numWrong: 0,
@@ -38,7 +39,6 @@ class TextArea extends Component {
                 
             }else {
                 this.handleError(cursorIdx, lesson, key)
-                console.log(this.state)
             }   
         }
     }
@@ -52,27 +52,39 @@ class TextArea extends Component {
             lesson[i] = key
             key = temp
         }
-        console.log(numWrong, wrongStartIdx, idx)
         this.setState({
             lesson,
             cursorIdx: ++idx,
             wrongCharsStartIdx: wrongStartIdx,
             numWrong: ++numWrong
+        }, () => console.log(this.state))
+        console.log(numWrong, wrongStartIdx, idx)
+    }
+
+    handleClick() {
+        this.setState({
+            lesson: this.state.lessonOriginal,
+            cursorIdx: 0,
+            wrongCharsStartIdx: 0,
+            numWrong: 0,
+            complete: false,
         })
     }
 
-    handleClick(event) {
-        this.setState({cursorIdx: 0})
-    }
-
     statusUpdate(cursorIdx, idx) {
-        if(idx === cursorIdx) return 'blinking'
+        const { numWrong, wrongCharsStartIdx } = this.state
+        if(numWrong > 0) {
+            if(idx >= wrongCharsStartIdx && idx <= cursorIdx) return 'mistake'
+            else if(idx === cursorIdx) return 'mistake-blinking'
+            else if(idx === wrongCharsStartIdx-1) return 'normal'
+        }
+        else if(idx === cursorIdx) return 'blinking'
         else if(idx < cursorIdx) return 'complete'
         else return 'normal'
     }
 
     render() {
-        let { lesson, cursorIdx } = this.state
+        const { lesson, cursorIdx } = this.state
         return(
             <div className='text-container' onClick={this.handleClick} onKeyDown={this.handleKeyDown} tabIndex='-1'>
                 {lesson.map( (char, idx) => <Char char={char} index={idx} status={this.statusUpdate(cursorIdx, idx)} key={idx} />)}

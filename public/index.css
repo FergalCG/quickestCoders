@@ -38,6 +38,12 @@ body {
     -webkit-animation: blink 0.65s infinite;
 }
 
+.mistake-blinking {
+    position: relative;
+    animation: mistake-blink 0.65s linear infinite;
+    -webkit-animation: mistake-blink 0.65s infinite;
+}
+
 .complete {
     position: relative;
     color: green;
@@ -78,5 +84,43 @@ body {
     99.99% {
         background: white;
         color: black;
+    }
+}
+
+@keyframes mistake-blink {
+    0%{
+        background: red;
+        color: white;
+    }
+    49.99% {
+        background: red;
+        color: white;
+    }
+    50%{
+        background: white;
+        color: red;
+    }
+    99.99% {
+        background: white;
+        color: red;
+    }
+}
+
+@-webkit-keyframes mistake-blink {
+    0%{
+        background: red;
+        color: white;
+    }
+    49.99% {
+        background: red;
+        color: white;
+    }
+    50%{
+        background: white;
+        color: red;
+    }
+    99.99% {
+        background: white;
+        color: red;
     }
 }
