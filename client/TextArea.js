@@ -9,8 +9,8 @@ class TextArea extends Component {
         this.state = {
             lesson: ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"],
             cursorIdx: 0,
-            numWrong: 0,
             wrongCharsStartIdx: 0,
+            numWrong: 0,
             complete: false,
             allowedKeys: new Set(["a", "A", "b", "B", "c", "C", "d", "D", "e", "E", "f", "F", "g", "G", "h", "H", "i", "I", "j", "J", 
                                 "k", "K", "l", "L", "m", "M", "n", "N", "o", "O", "p", "P", "q", "Q", "r", "R", "s", "S", "t", "T", "u", 
@@ -21,27 +21,44 @@ class TextArea extends Component {
 
         this.handleClick = this.handleClick.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.handleError = this.handleError.bind(this)
     }
 
     handleKeyDown(event) {
         event.preventDefault()
-        const lesson = this.state.lesson
-        let cursorIdx = this.state.cursorIdx
-        console.log(lesson[cursorIdx])
-        if(this.state.allowedKeys.has(event.key)) {
-            if(event.key === lesson[cursorIdx]) {
+        const { lesson } = this.state,
+                key = event.key
+        let { cursorIdx } = this.state
+
+        if(this.state.allowedKeys.has(key)) {
+            if(key === lesson[cursorIdx]) {
                 if(cursorIdx === lesson.length-1) this.setState({cursorIdx: ++cursorIdx, complete: true})
                 else this.setState({cursorIdx: ++cursorIdx})
-            } else if(event.key === "Backspace") {
+            } else if(key === "Backspace") {
                 
             }else {
-                
-            }
+                this.handleError(cursorIdx, lesson, key)
+                console.log(this.state)
+            }   
         }
     }
 
-    handleError() {
-        
+    handleError(idx, lesson, key) {
+        let { numWrong } = this.state
+        const wrongStartIdx = numWrong === 0 ? idx+1 : this.state.wrongCharsStartIdx
+
+        for(let i = idx+1; i < lesson.length; i++) {
+            const temp = lesson[i]
+            lesson[i] = key
+            key = temp
+        }
+        console.log(numWrong, wrongStartIdx, idx)
+        this.setState({
+            lesson,
+            cursorIdx: ++idx,
+            wrongCharsStartIdx: wrongStartIdx,
+            numWrong: ++numWrong
+        })
     }
 
     handleClick(event) {
@@ -58,7 +75,7 @@ class TextArea extends Component {
         let { lesson, cursorIdx } = this.state
         return(
             <div className='text-container' onClick={this.handleClick} onKeyDown={this.handleKeyDown} tabIndex='-1'>
-                {lesson.map( (char, idx) => <Char char={char} cursor={cursorIdx} status={this.statusUpdate(cursorIdx, idx)} key={idx} />)}
+                {lesson.map( (char, idx) => <Char char={char} index={idx} status={this.statusUpdate(cursorIdx, idx)} key={idx} />)}
             </div>
         )
     }
