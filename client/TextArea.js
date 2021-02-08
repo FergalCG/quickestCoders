@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import Char from './Char'
 import axios from 'axios'
 
+const LESSON = ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"]
 
 class TextArea extends Component {
     constructor() {
         super()
         this.state = {
-            lesson: ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"],
-            lessonOriginal: ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"],
+            lesson: [...LESSON],
+            lessonOriginal: [...LESSON],
             cursorIdx: 0,
             wrongCharsStartIdx: 0,
             numWrong: 0,
@@ -25,26 +26,31 @@ class TextArea extends Component {
         this.handleError = this.handleError.bind(this)
     }
 
+    
+
     handleKeyDown(event) {
         event.preventDefault()
-        const { lesson } = this.state,
+
+        const lesson = [...this.state.lesson],
                 key = event.key
-        let { cursorIdx } = this.state
+
+        let { cursorIdx, numWrong } = this.state
+
+        console.log('keydown---', this.state)
 
         if(this.state.allowedKeys.has(key)) {
-            if(key === lesson[cursorIdx]) {
+            if(numWrong < 1 && key === lesson[cursorIdx]) {
                 if(cursorIdx === lesson.length-1) this.setState({cursorIdx: ++cursorIdx, complete: true})
                 else this.setState({cursorIdx: ++cursorIdx})
-            } else if(key === "Backspace") {
-                
-            }else {
-                this.handleError(cursorIdx, lesson, key)
+            }else if(key === "Backspace") {
+   
+            }else if(numWrong < 5){
+                this.handleError(cursorIdx, lesson, key, numWrong)
             }   
         }
     }
 
-    handleError(idx, lesson, key) {
-        let { numWrong } = this.state
+    handleError(idx, lesson, key, numWrong) {
         const wrongStartIdx = numWrong === 0 ? idx+1 : this.state.wrongCharsStartIdx
 
         for(let i = idx+1; i < lesson.length; i++) {
@@ -52,6 +58,8 @@ class TextArea extends Component {
             lesson[i] = key
             key = temp
         }
+        lesson.push(key)
+
         this.setState({
             lesson,
             cursorIdx: ++idx,
@@ -62,6 +70,7 @@ class TextArea extends Component {
     }
 
     handleClick() {
+        console.log(this.state.lessonOriginal)
         this.setState({
             lesson: this.state.lessonOriginal,
             cursorIdx: 0,
@@ -74,7 +83,7 @@ class TextArea extends Component {
     statusUpdate(cursorIdx, idx) {
         const { numWrong, wrongCharsStartIdx } = this.state
         if(numWrong > 0) {
-            if(idx >= wrongCharsStartIdx && idx <= cursorIdx) return 'mistake'
+            if(idx >= wrongCharsStartIdx && idx < cursorIdx) return 'mistake'
             else if(idx === cursorIdx) return 'mistake-blinking'
             else if(idx === wrongCharsStartIdx-1) return 'normal'
         }

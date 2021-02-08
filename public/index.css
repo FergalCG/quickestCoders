@@ -32,6 +32,11 @@ body {
     margin-left: 1.5em;
 }
 
+.mistake {
+    position: relative;
+    background-color: red;
+}
+
 .blinking {
     position: relative;
     animation: blink 0.65s linear infinite;
