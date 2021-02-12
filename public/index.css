@@ -22,14 +22,11 @@ body {
 
 .text-container {
     overflow: auto;
+    white-space: pre;
 }
 
 .normal {
     position: relative;
-}
-
-.normal-tab {
-    margin-left: 1.5em;
 }
 
 .mistake {
@@ -51,7 +48,7 @@ body {
 
 .complete {
     position: relative;
-    color: green;
+    background-color: green;
 }
 
 @keyframes blink {

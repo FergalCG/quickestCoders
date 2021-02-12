@@ -6,8 +6,9 @@ class Char extends Component {
         super(props)
         this.state = {
             char: props.char,
-            status: props.status || 'normal'
+            status: props.status
         }
+
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this)
     }
 
@@ -24,10 +25,10 @@ class Char extends Component {
 
     render() {
         let { char, status } = this.state
-        if(char === "Tab") {
-            status = 'normal-tab'
-            char = " "
-        }else if(char === "Enter") char = <br/>
+
+        if(char === 'Tab') char = '    '
+        else if(char === 'Enter') char = <br/>
+
         return (
             <span className={status}>{char}</span>
         )

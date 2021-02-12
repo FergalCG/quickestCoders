@@ -36,7 +36,6 @@ class TextArea extends Component {
 
         let { cursorIdx, numWrong } = this.state
 
-        console.log('keydown---', this.state)
 
         if(this.state.allowedKeys.has(key)) {
             if(numWrong < 1 && key === lesson[cursorIdx]) {
@@ -44,7 +43,7 @@ class TextArea extends Component {
                 else this.setState({cursorIdx: ++cursorIdx})
             }else if(key === "Backspace") {
    
-            }else if(numWrong < 5){
+            }else if(numWrong < 5 && key !== 'Enter'){
                 this.handleError(cursorIdx, lesson, key, numWrong)
             }   
         }
@@ -65,12 +64,10 @@ class TextArea extends Component {
             cursorIdx: ++idx,
             wrongCharsStartIdx: wrongStartIdx,
             numWrong: ++numWrong
-        }, () => console.log(this.state))
-        console.log(numWrong, wrongStartIdx, idx)
+        })
     }
 
     handleClick() {
-        console.log(this.state.lessonOriginal)
         this.setState({
             lesson: this.state.lessonOriginal,
             cursorIdx: 0,
@@ -82,14 +79,16 @@ class TextArea extends Component {
 
     statusUpdate(cursorIdx, idx) {
         const { numWrong, wrongCharsStartIdx } = this.state
+
         if(numWrong > 0) {
             if(idx >= wrongCharsStartIdx && idx < cursorIdx) return 'mistake'
-            else if(idx === cursorIdx) return 'mistake-blinking'
             else if(idx === wrongCharsStartIdx-1) return 'normal'
+            else if(idx === cursorIdx) return 'mistake-blinking'
         }
-        else if(idx === cursorIdx) return 'blinking'
-        else if(idx < cursorIdx) return 'complete'
-        else return 'normal'
+        
+        if(idx === cursorIdx) return 'blinking'
+        if(idx < cursorIdx) return 'complete'
+        return 'normal'
     }
 
     render() {
