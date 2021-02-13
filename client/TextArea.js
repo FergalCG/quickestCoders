@@ -24,25 +24,28 @@ class TextArea extends Component {
         this.handleClick = this.handleClick.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
         this.handleError = this.handleError.bind(this)
+        this.handleBackspace = this.handleBackspace.bind(this)
     }
 
     
 
     handleKeyDown(event) {
         event.preventDefault()
-
+        
         const lesson = [...this.state.lesson],
-                key = event.key
+                key = event.key,
+                complete = this.state.complete
+
+        if(complete) return
 
         let { cursorIdx, numWrong } = this.state
-
 
         if(this.state.allowedKeys.has(key)) {
             if(numWrong < 1 && key === lesson[cursorIdx]) {
                 if(cursorIdx === lesson.length-1) this.setState({cursorIdx: ++cursorIdx, complete: true})
                 else this.setState({cursorIdx: ++cursorIdx})
-            }else if(key === "Backspace") {
-   
+            }else if(key === "Backspace" && numWrong > 0) {
+                this.handleBackspace(lesson, cursorIdx, numWrong)
             }else if(numWrong < 5 && key !== 'Enter'){
                 this.handleError(cursorIdx, lesson, key, numWrong)
             }   
@@ -64,6 +67,22 @@ class TextArea extends Component {
             cursorIdx: ++idx,
             wrongCharsStartIdx: wrongStartIdx,
             numWrong: ++numWrong
+        })
+    }
+
+    handleBackspace(lesson, cursorIdx, numWrong) {
+        for(let i = cursorIdx+1; i < lesson.length; i++) {
+            lesson[i-1] = lesson[i]
+        }
+        lesson.pop()
+
+        let nextWrongStartIdx = numWrong-1 === 0 ? 0 : this.state.wrongCharsStartIdx
+
+        this.setState({
+            lesson,
+            cursorIdx: --cursorIdx,
+            wrongCharsStartIdx: nextWrongStartIdx,
+            numWrong: --numWrong
         })
     }
 
