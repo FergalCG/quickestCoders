@@ -2,14 +2,15 @@ import React, { Component } from 'react'
 import Char from './Char'
 import axios from 'axios'
 
-const LESSON = ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"]
+// const LESSON = ["f", "o", "r", "(", "l", "e", "t", " ", "i", " ", "=", " ", "0", ";", " ", "i", " ", "<", " ", "a", "r", "r", "a", "y", ".", "l", "e", "n", "g", "t", "h", ";", " ", "i", "+", "+", ")", " ", "{", "Enter", "Tab", "c", "o", "n", "s", "o", "l", "e", ".", "l", "o", "g", "(", "\"", "H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!", "\"", ")", "Enter", "}"]
 
 class TextArea extends Component {
     constructor() {
         super()
         this.state = {
-            lesson: [...LESSON],
-            lessonOriginal: [...LESSON],
+            lesson: [],
+            lessonOriginal: [],
+            allLessons: [],
             cursorIdx: 0,
             wrongCharsStartIdx: 0,
             numWrong: 0,
@@ -27,26 +28,50 @@ class TextArea extends Component {
         this.handleBackspace = this.handleBackspace.bind(this)
     }
 
+    async componentDidMount() {
+        try {
+            const { data } = await axios.get('http://localhost:5000/api/lesson/')
+            const curLesson = data[this.getRandomLessonIndex(data.length)].lesson
+            this.setState({
+                lesson: [...curLesson],
+                lessonOriginal: [...curLesson],
+                allLessons: [...data]
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    getRandomLessonIndex(max) {
+        return Math.floor(Math.random() * max)
+    }
     
 
     handleKeyDown(event) {
         event.preventDefault()
         
         const lesson = [...this.state.lesson],
-                key = event.key,
-                complete = this.state.complete
-
-        if(complete) return
+                key = event.key
 
         let { cursorIdx, numWrong } = this.state
 
         if(this.state.allowedKeys.has(key)) {
             if(numWrong < 1 && key === lesson[cursorIdx]) {
-                if(cursorIdx === lesson.length-1) this.setState({cursorIdx: ++cursorIdx, complete: true})
-                else this.setState({cursorIdx: ++cursorIdx})
+                if(cursorIdx === lesson.length-1) {
+                    const { allLessons } = this.state
+                    const curLesson = allLessons[this.getRandomLessonIndex(allLessons.length)].lesson
+                    this.setState({
+                        lesson: [...curLesson],
+                        lessonOriginal: [...curLesson],
+                        cursorIdx: 0,
+                        wrongCharsStartIdx: 0,
+                        numWrong: 0,
+                        complete: false,
+                    })
+                }else this.setState({cursorIdx: ++cursorIdx})
             }else if(key === "Backspace" && numWrong > 0) {
                 this.handleBackspace(lesson, cursorIdx, numWrong)
-            }else if(numWrong < 5 && key !== 'Enter'){
+            }else if(numWrong < 5 && key !== 'Enter' && key !== 'Backspace'){
                 this.handleError(cursorIdx, lesson, key, numWrong)
             }   
         }

@@ -5,11 +5,14 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, "./public"),
     historyApiFallback: true,
-    proxy: {
-      '/api': 'http://localhost:5000',
-      pathRewrite: { '^/api': ''},
-      secure: false
-    }    
+        proxy: {
+          '/api':{
+                target:'http://localhost:5000/',
+                pathRewrite: {'^/api' : ''},
+                secure:false,
+                changeOrigin:true
+          }
+        },
   },
   devtool: 'inline-source-map',
   entry: path.resolve(__dirname, './client/index.js'),
